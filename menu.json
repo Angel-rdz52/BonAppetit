@@ -3,6 +3,7 @@
     {
       "category": "Café",
       "items": [
+        { "name": "Angel", "price": 10 },
         { "name": "Espresso", "price": 25 },
         {
           "name": "Cappuccino",
