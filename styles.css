@@ -1,0 +1,526 @@
+/* Variables de Color */
+:root {
+    --bg-color: #FAEDDF;
+    --text-main: #3E2723;
+    --text-light: #5D4037;
+    --accent: #D7CCC8;
+    --btn-color: #795548;
+    --btn-hover: #5D4037;
+    --whatsapp-color: #25D366;
+    --whatsapp-hover: #128C7E;
+    --white: #FFFFFF;
+}
+
+/* Reset básico */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    line-height: 1.6; 
+    overflow-x: hidden;
+}
+
+h1, h2, h3 { 
+    font-family: 'Playfair Display', serif; 
+}
+
+/* Navegación */
+header { 
+    background-color: var(--white); 
+    padding: 1rem 5%; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+}
+
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: var(--text-main); 
+    text-decoration: none; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.logo-icon { 
+    height: 1.8rem; 
+    width: auto; 
+    background-color: transparent; 
+}
+
+.header-actions { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+/* Icono del Carrito en Header */
+.cart-icon-container { 
+    font-size: 1.5rem; 
+    cursor: pointer; 
+    position: relative; 
+    color: var(--text-main); 
+    transition: transform 0.2s; 
+}
+
+.cart-icon-container:hover { 
+    transform: scale(1.1); 
+}
+
+.cart-badge { 
+    position: absolute; 
+    top: -5px; 
+    right: -10px; 
+    background-color: var(--btn-color); 
+    color: white; 
+    font-size: 0.7rem; 
+    font-weight: bold; 
+    border-radius: 50%; 
+    padding: 2px 6px; 
+}
+
+nav { 
+    display: flex; 
+    gap: 20px; 
+}
+
+nav a { 
+    text-decoration: none; 
+    color: var(--text-main); 
+    font-weight: 500; 
+    transition: color 0.3s; 
+}
+
+nav a:hover { 
+    color: var(--btn-color); 
+}
+
+.menu-toggle { 
+    display: none; 
+    font-size: 1.8rem; 
+    background: none; 
+    border: none; 
+    color: var(--text-main); 
+    cursor: pointer; 
+}
+
+/* Hero Section */
+.hero { 
+    text-align: center; 
+    padding: 6rem 5% 4rem; 
+    background: linear-gradient(rgba(250, 237, 223, 0.9), rgba(250, 237, 223, 0.9)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80') center/cover; 
+}
+
+.hero h1 { 
+    font-size: 3.5rem; 
+    margin-bottom: 10px; 
+    letter-spacing: 2px; 
+}
+
+.slogan { 
+    margin-top: 20px; 
+    font-style: italic; 
+    font-size: 1.2rem; 
+    color: var(--text-light); 
+    max-width: 600px; 
+    margin: 0 auto 30px; 
+}
+
+.btn { 
+    display: inline-block; 
+    background-color: var(--btn-color); 
+    color: var(--white); 
+    padding: 12px 30px; 
+    border-radius: 30px; 
+    text-decoration: none; 
+    font-weight: 500; 
+    transition: background 0.3s, transform 0.2s; 
+    margin: 5px; 
+    cursor: pointer; 
+    border: none; 
+    font-family: inherit;
+}
+
+.btn:hover { 
+    background-color: var(--btn-hover); 
+    transform: translateY(-2px); 
+}
+
+.btn-whatsapp { 
+    background-color: var(--whatsapp-color); 
+}
+
+.btn-whatsapp:hover { 
+    background-color: var(--whatsapp-hover); 
+}
+
+/* Sección Menú */
+.menu-section { 
+    padding: 5rem 5%; 
+    background-color: var(--white); 
+}
+
+.menu-title { 
+    text-align: center; 
+    font-size: 2.5rem; 
+    margin-bottom: 3rem; 
+}
+
+.menu-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 3rem; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+.menu-category h3 { 
+    font-size: 1.8rem; 
+    border-bottom: 2px solid var(--accent); 
+    padding-bottom: 10px; 
+    margin-bottom: 20px; 
+    color: var(--text-main); 
+}
+
+.menu-item { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 15px; 
+    align-items: center; 
+}
+
+.menu-item-name { 
+    font-weight: 500; 
+    color: var(--text-light); 
+    flex-grow: 1; 
+    border-bottom: 1px dotted #ccc; 
+    margin-right: 15px; 
+    padding-bottom: 5px; 
+}
+
+.menu-item-price { 
+    font-weight: 600; 
+    margin-right: 15px; 
+}
+
+/* Botón Agregar al carrito en los productos */
+.add-btn { 
+    background-color: var(--btn-color); 
+    color: white; 
+    border: none; 
+    border-radius: 50%; 
+    width: 28px; 
+    height: 28px; 
+    font-size: 1.2rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    transition: transform 0.2s, background 0.2s; 
+}
+
+.add-btn:hover { 
+    background-color: var(--btn-hover); 
+    transform: scale(1.1); 
+}
+
+.add-btn:active { 
+    transform: scale(0.9); 
+}
+
+.full-width { 
+    grid-column: 1 / -1; 
+}
+
+.dessert-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 0 3rem; 
+}
+
+/* --- DISEÑO DEL MODAL DEL CARRITO --- */
+.cart-modal-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.6); 
+    z-index: 1001; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: 0.3s; 
+}
+
+.cart-modal-overlay.active { 
+    opacity: 1; 
+    visibility: visible; 
+}
+
+.cart-modal { 
+    background: var(--bg-color); 
+    width: 90%; 
+    max-width: 450px; 
+    max-height: 85vh; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    display: flex; 
+    flex-direction: column; 
+    transform: translateY(-30px); 
+    transition: transform 0.3s ease-out; 
+}
+
+.cart-modal-overlay.active .cart-modal { 
+    transform: translateY(0); 
+}
+
+.cart-header { 
+    padding: 20px; 
+    background-color: var(--white); 
+    border-bottom: 1px solid var(--accent); 
+    border-radius: 20px 20px 0 0; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.close-cart { 
+    background: none; 
+    border: none; 
+    font-size: 2rem; 
+    color: var(--text-main); 
+    cursor: pointer; 
+    line-height: 1; 
+}
+
+.cart-items { 
+    padding: 20px; 
+    flex-grow: 1; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.cart-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: var(--white); 
+    padding: 10px 15px; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+}
+
+.cart-item-info { 
+    flex-grow: 1; 
+}
+
+.cart-item-title { 
+    font-weight: 500; 
+    font-size: 0.9rem; 
+    margin-bottom: 5px; 
+}
+
+.cart-item-controls { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.qty-btn { 
+    background: var(--accent); 
+    border: none; 
+    width: 25px; 
+    height: 25px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    color: var(--text-main); 
+}
+
+.cart-item-price { 
+    font-weight: bold; 
+    min-width: 50px; 
+    text-align: right; 
+}
+
+.cart-footer { 
+    padding: 20px; 
+    background-color: var(--white); 
+    border-top: 1px solid var(--accent); 
+    border-radius: 0 0 20px 20px; 
+}
+
+.cart-total-wrap { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* --- BOTONES FLOTANTES (CARRITO Y WHATSAPP) --- */
+.whatsapp-float {
+    position: fixed; 
+    width: 60px; 
+    height: 60px; 
+    bottom: 30px; 
+    right: 30px;
+    background-color: var(--whatsapp-color); 
+    color: #FFF; 
+    border-radius: 50px;
+    text-align: center; 
+    font-size: 30px; 
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 100; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    text-decoration: none; 
+    transition: transform 0.3s;
+}
+
+.whatsapp-float:hover { 
+    transform: scale(1.1); 
+}
+
+.cart-float {
+    position: fixed; 
+    width: 60px; 
+    height: 60px; 
+    bottom: 105px; /* Altura calculada para quedar arriba de WhatsApp */
+    right: 30px;
+    background-color: var(--text-main); 
+    color: #FFF; 
+    border-radius: 50px;
+    text-align: center; 
+    border: none; 
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 100; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer; 
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.cart-float:hover { 
+    transform: scale(1.1); 
+    background-color: var(--btn-hover); 
+}
+
+.floating-cart-badge {
+    position: absolute; 
+    top: -2px; 
+    right: -2px;
+    background-color: #E53935; /* Rojo llamativo para notificaciones */
+    color: white; 
+    font-size: 0.75rem; 
+    font-weight: bold;
+    border-radius: 50%; 
+    width: 22px; 
+    height: 22px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Footer / Contacto */
+footer { 
+    background-color: var(--text-main); 
+    color: var(--white); 
+    text-align: center; 
+    padding: 4rem 5%; 
+}
+
+.contact-info { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+    margin-bottom: 2rem; 
+    align-items: center; 
+}
+
+.social-link { 
+    color: var(--accent); 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+.copyright { 
+    font-size: 0.8rem; 
+    opacity: 0.7; 
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .hero h1 { 
+        font-size: 2.5rem; 
+    }
+    
+    .menu-toggle { 
+        display: block; 
+    }
+    
+    nav { 
+        display: none; 
+        flex-direction: column; 
+        position: absolute; 
+        top: 100%; 
+        left: 0; 
+        width: 100%; 
+        background-color: var(--white); 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        padding: 1rem 0; 
+        text-align: center; 
+    }
+    
+    nav.active { 
+        display: flex; 
+    }
+    
+    nav a { 
+        padding: 10px 0; 
+        margin: 0; 
+    }
+    
+    /* Ajuste de botones flotantes para pantallas más pequeñas */
+    .whatsapp-float { 
+        width: 50px; 
+        height: 50px; 
+        bottom: 20px; 
+        right: 20px; 
+        font-size: 25px; 
+    }
+    
+    .cart-float { 
+        width: 50px; 
+        height: 50px; 
+        bottom: 85px; 
+        right: 20px; 
+    }
+    
+    .floating-cart-badge { 
+        width: 18px; 
+        height: 18px; 
+        font-size: 0.7rem; 
+    }
+}
