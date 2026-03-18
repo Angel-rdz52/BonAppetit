@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔹 CARRITO
     // =============================
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart = [];
 
     // ELEMENTOS
     const cartOverlay = document.getElementById('cart-overlay');
@@ -63,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 cart.push({ name, price, qty: 1 });
             }
 
-            saveCart();
             updateCartUI();
             bounceCart();
         }
@@ -116,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         clearBtn.addEventListener('click', () => {
             cart = [];
-            saveCart();
             updateCartUI();
         });
 
@@ -144,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        saveCart();
         updateCartUI();
     });
 
@@ -154,13 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateBadges(count) {
         cartBadge.innerText = count;
         floatingCartBadge.innerText = count;
-    }
-
-    // =============================
-    // 🔹 GUARDAR
-    // =============================
-    function saveCart() {
-        localStorage.setItem("cart", JSON.stringify(cart));
     }
 
     // =============================
