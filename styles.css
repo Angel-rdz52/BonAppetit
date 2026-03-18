@@ -470,6 +470,42 @@ footer {
     opacity: 0.7; 
 }
 
+function openVariantModal({ title, options, onSelect }) {
+
+    const modal = document.getElementById("variant-modal");
+    const titleEl = document.getElementById("variant-title");
+    const container = document.getElementById("variant-options");
+
+    titleEl.innerText = title;
+    container.innerHTML = "";
+
+    options.forEach(opt => {
+
+        const btn = document.createElement("button");
+        btn.className = "variant-option";
+
+        btn.innerHTML = `
+            <div>${opt.label}</div>
+            <div>$${opt.price}</div>
+        `;
+
+        btn.onclick = () => {
+            onSelect(opt);
+            closeVariantModal();
+        };
+
+        container.appendChild(btn);
+    });
+
+    modal.classList.add("active");
+}
+
+function closeVariantModal() {
+    document.getElementById("variant-modal").classList.remove("active");
+}
+
+document.getElementById("variant-cancel")?.addEventListener("click", closeVariantModal);
+
 /* Responsividad para móviles */
 @media (max-width: 768px) {
     .hero h1 { 
