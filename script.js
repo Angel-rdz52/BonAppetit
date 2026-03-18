@@ -10,14 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
         mobileMenuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
         });
-        loadMenu();
     }
 
     // =============================
     // 🔹 CARRITO
     // =============================
-
-    // let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let cart = [];
 
     // ELEMENTOS
@@ -35,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendOrderBtn = document.getElementById('send-order-btn');
 
     // =============================
-    // 🔹 MODAL
+    // 🔹 MODAL CARRITO
     // =============================
     const toggleCart = () => cartOverlay.classList.toggle('active');
 
@@ -48,27 +45,142 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =============================
-    // 🔹 AGREGAR PRODUCTOS
+    // 🔹 MODAL VARIANTES
     // =============================
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-btn')) {
+    function openVariantModal({ title, options, onSelect }) {
 
-            const btn = e.target;
-            const name = btn.dataset.name;
-            const price = parseFloat(btn.dataset.price);
+        const modal = document.getElementById("variant-modal");
+        const titleEl = document.getElementById("variant-title");
+        const container = document.getElementById("variant-options");
 
-            const existing = cart.find(p => p.name === name);
+        titleEl.innerText = title;
+        container.innerHTML = "";
 
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ name, price, qty: 1 });
-            }
+        options.forEach(opt => {
 
-            updateCartUI();
-            bounceCart();
+            const btn = document.createElement("button");
+            btn.className = "variant-option";
+
+            btn.innerHTML = `
+                <div style="font-size:1.2rem">${opt.label}</div>
+                <div>$${opt.price}</div>
+            `;
+
+            btn.onclick = () => {
+                onSelect(opt);
+                closeVariantModal();
+            };
+
+            container.appendChild(btn);
+        });
+
+        modal.classList.add("active");
+    }
+
+    function closeVariantModal() {
+        document.getElementById("variant-modal").classList.remove("active");
+    }
+
+    document.getElementById("variant-cancel")?.addEventListener("click", closeVariantModal);
+
+    // =============================
+    // 🔹 AGREGAR AL CARRITO
+    // =============================
+    function addToCart(name, price) {
+
+        const existing = cart.find(p => p.name === name);
+
+        if (existing) {
+            existing.qty++;
+        } else {
+            cart.push({ name, price, qty: 1 });
         }
-    });
+
+        updateCartUI();
+        bounceCart();
+    }
+
+    // =============================
+    // 🔹 MANEJAR PRODUCTO
+    // =============================
+    function handleProduct(product) {
+
+        if (product.variants) {
+            openVariantModal({
+                title: product.name,
+                options: product.variants,
+                onSelect: (opt) => {
+                    addToCart(`${product.name} (${opt.label})`, opt.price);
+                }
+            });
+            return;
+        }
+
+        addToCart(product.name, product.price);
+    }
+
+    // =============================
+    // 🔹 RENDERIZAR MENU
+    // =============================
+    function renderMenu(menu) {
+
+        const container = document.getElementById("menu-container");
+        container.innerHTML = "";
+
+        menu.forEach(category => {
+
+            const catDiv = document.createElement("div");
+            catDiv.className = "menu-category";
+
+            const title = document.createElement("h3");
+            title.innerText = category.category;
+
+            catDiv.appendChild(title);
+
+            category.items.forEach(item => {
+
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "menu-item";
+
+                let priceText = "";
+
+                if (item.variants) {
+                    priceText = `$${item.variants[0].price}/$${item.variants[1].price}`;
+                } else {
+                    priceText = `$${item.price}`;
+                }
+
+                itemDiv.innerHTML = `
+                    <span class="menu-item-name">${item.name}</span>
+                    <span class="menu-item-price">${priceText}</span>
+                    <button class="add-btn">+</button>
+                `;
+
+                const btn = itemDiv.querySelector(".add-btn");
+
+                btn.addEventListener("click", () => {
+                    handleProduct(item);
+                });
+
+                catDiv.appendChild(itemDiv);
+            });
+
+            container.appendChild(catDiv);
+        });
+    }
+
+    // =============================
+    // 🔹 CARGAR MENU JSON
+    // =============================
+    async function loadMenu() {
+        try {
+            const res = await fetch("menu.json");
+            const data = await res.json();
+            renderMenu(data.menu);
+        } catch (err) {
+            console.error("Error cargando menú:", err);
+        }
+    }
 
     // =============================
     // 🔹 ACTUALIZAR UI
@@ -109,16 +221,15 @@ document.addEventListener("DOMContentLoaded", () => {
             cartItemsContainer.appendChild(el);
         });
 
-        // BOTON LIMPIAR
         const clearBtn = document.createElement('button');
         clearBtn.className = "btn";
         clearBtn.textContent = "Vaciar carrito";
         clearBtn.style.marginTop = "10px";
 
-        clearBtn.addEventListener('click', () => {
+        clearBtn.onclick = () => {
             cart = [];
             updateCartUI();
-        });
+        };
 
         cartItemsContainer.appendChild(clearBtn);
 
@@ -188,110 +299,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const url = `https://wa.me/528781147915?text=${encodeURIComponent(text)}`;
         window.open(url, "_blank");
+
+        // limpiar carrito después de enviar
+        cart = [];
+        updateCartUI();
     });
 
     // =============================
     // 🔹 INIT
     // =============================
     updateCartUI();
+    loadMenu(); // 🔥 IMPORTANTE
+
 });
-
-// =============================
-// 🔹 CARGAR MENU JSON
-// =============================
-async function loadMenu() {
-    try {
-        const res = await fetch("menu.json");
-        const data = await res.json();
-
-        renderMenu(data.menu);
-    } catch (err) {
-        console.error("Error cargando menú:", err);
-    }
-}
-
-// =============================
-// 🔹 RENDERIZAR MENU
-// =============================
-function renderMenu(menu) {
-
-    const container = document.getElementById("menu-container");
-    container.innerHTML = "";
-
-    menu.forEach(category => {
-
-        const catDiv = document.createElement("div");
-        catDiv.className = "menu-category";
-
-        const title = document.createElement("h3");
-        title.innerText = category.category;
-
-        catDiv.appendChild(title);
-
-        category.items.forEach(item => {
-
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "menu-item";
-
-            let priceText = "";
-
-            if (item.variants) {
-                priceText = `$${item.variants[0].price}/$${item.variants[1].price}`;
-            } else {
-                priceText = `$${item.price}`;
-            }
-
-            itemDiv.innerHTML = `
-                <span class="menu-item-name">${item.name}</span>
-                <span class="menu-item-price">${priceText}</span>
-                <button class="add-btn">+</button>
-            `;
-
-            const btn = itemDiv.querySelector(".add-btn");
-
-            btn.addEventListener("click", () => {
-                handleProduct(item);
-            });
-
-            catDiv.appendChild(itemDiv);
-        });
-
-        container.appendChild(catDiv);
-    });
-}
-
-// =============================
-// 🔹 MANEJAR PRODUCTO
-// =============================
-function handleProduct(product) {
-
-    if (product.variants) {
-        openVariantModal({
-            title: product.name,
-            options: product.variants,
-            onSelect: (opt) => {
-                addToCart(`${product.name} (${opt.label})`, opt.price);
-            }
-        });
-        return;
-    }
-
-    addToCart(product.name, product.price);
-}
-
-// =============================
-// 🔹 AGREGAR AL CARRITO (REUTILIZABLE)
-// =============================
-function addToCart(name, price) {
-
-    const existing = cart.find(p => p.name === name);
-
-    if (existing) {
-        existing.qty++;
-    } else {
-        cart.push({ name, price, qty: 1 });
-    }
-
-    updateCartUI();
-    bounceCart();
-}
