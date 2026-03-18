@@ -4,149 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bon Appetit | Coffee & Snacks</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">
-            <svg class="logo-icon" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 253 346" preserveAspectRatio="xMidYMid meet">
-                <g transform="translate(0.000000,346.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
-                    <path d="M1180 3098 c0 -52 -20 -85 -110 -186 -26 -30 -25 -42 7 -105 l26 -52 -12 -120 c-6 -66 -16 -167 -21 -225 -6 -58 -19 -197 -31 -310 -11 -113 -24 -250 -29 -305 -20 -205 -25 -219 -86 -231 -39 -7 -40 -10 -18 -79 16 -49 15 -56 -10 -185 -15 -74 -31 -149 -37 -166 -12 -40 -44 -68 -92 -84 -20 -6 -41 -19 -46 -29 -16 -30 -211 -624 -211 -643 0 -17 13 -18 177 -18 138 0 174 3 165 12 -7 7 -12 15 -12 20 0 12 71 28 124 28 l49 0 -59 38 c-96 62 -150 163 -161 298 -5 68 -5 71 18 77 13 4 194 7 402 7 l377 0 0 -29 c0 -25 6 -31 35 -41 51 -17 75 -46 75 -92 0 -88 -68 -157 -187 -192 -32 -9 -78 -27 -103 -39 l-44 -22 79 -12 c44 -6 86 -12 93 -12 18 -1 14 -29 -5 -34 -10 -3 64 -5 164 -6 110 -1 184 3 188 9 3 5 -39 135 -93 287 -151 420 -129 375 -192 400 -54 21 -56 23 -76 85 -12 34 -31 118 -43 185 -19 112 -20 126 -6 165 20 58 19 65 -10 72 -30 8 -51 47 -69 129 -8 34 -14 50 -15 36 -3 -89 -92 -342 -184 -524 -49 -99 -81 -189 -97 -283 -7 -39 -16 -69 -20 -67 -3 2 -15 50 -25 106 -28 151 -15 202 120 479 131 270 149 336 122 464 -10 51 -35 118 -67 182 -27 56 -50 108 -50 115 0 7 16 -3 36 -22 45 -43 134 -167 134 -187 0 -9 3 -13 6 -10 3 3 -6 98 -20 210 -30 244 -43 366 -52 473 -5 71 -3 88 20 148 31 81 31 84 7 92 -11 3 -23 15 -27 27 -3 12 -21 36 -40 54 -20 21 -36 48 -40 71 -9 52 -23 76 -24 41z"/>
-                    <path d="M841 781 c-33 -21 12 -152 78 -224 52 -58 78 -67 37 -13 -38 51 -74 137 -83 202 -6 46 -9 49 -32 35z"/>
-                    <path d="M1566 671 c-3 -21 -17 -55 -31 -75 l-25 -37 22 7 c36 11 66 37 78 66 16 35 10 59 -16 69 -19 7 -22 3 -28 -30z"/>
-                </g>
-            </svg>
-            Bon Appetit
-        </a>
-        
-        <div class="header-actions">
-            <div class="cart-icon-container" id="open-cart-btn">
-                🛒 <span class="cart-badge" id="cart-badge">0</span>
-            </div>
-            <button class="menu-toggle" id="mobile-menu-btn">☰</button>
+<header>
+    <a href="#" class="logo">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 253 346">
+            <g transform="translate(0,346) scale(0.1,-0.1)" fill="currentColor">
+                <path d="M1180 3098..."/>
+            </g>
+        </svg>
+        Bon Appetit
+    </a>
+    
+    <div class="header-actions">
+        <div class="cart-icon-container" id="open-cart-btn">
+            🛒 <span class="cart-badge" id="cart-badge">0</span>
         </div>
-
-        <nav id="nav-menu">
-            <a href="#inicio">Inicio</a>
-            <a href="#menu">Menú</a>
-            <a href="#contacto">Contacto</a>
-        </nav>
-    </header>
-
-    <div class="cart-modal-overlay" id="cart-overlay">
-        <div class="cart-modal" id="cart-modal">
-            <div class="cart-header">
-                <h2>Tu Pedido</h2>
-                <button class="close-cart" id="close-cart-btn">&times;</button>
-            </div>
-            <div class="cart-items" id="cart-items-container">
-                <p style="text-align: center; margin-top: 20px; color: var(--text-light);">Tu carrito está vacío</p>
-            </div>
-            <div class="cart-footer">
-                <div class="cart-total-wrap">
-                    <h3>Total Estimado:</h3>
-                    <h3 id="cart-total-price">$0</h3>
-                </div>
-                <button class="btn btn-whatsapp" id="send-order-btn" style="width: 100%; margin-top: 15px;">Enviar pedido por WhatsApp</button>
-            </div>
-        </div>
+        <button class="menu-toggle" id="mobile-menu-btn">☰</button>
     </div>
 
-    <section id="inicio" class="hero">
-        <h1>BON APPETIT</h1>
-        <h3>Coffee & Snacks</h3>
-        <p class="slogan">"Ven y degusta el buen sabor de nuestros productos, ¡no te vas a arrepentir!"</p>
-        <a href="#menu" class="btn">Empezar a pedir</a>
-    </section>
+    <nav id="nav-menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#menu">Menú</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
 
-    <section id="menu" class="menu-section">
-        <h2 class="menu-title">Nuestro Menú</h2>
-        
-        <div class="menu-grid">
-            <div class="menu-category">
-                <h3>Café</h3>
-                <div class="menu-item"><span class="menu-item-name">Espresso</span><span class="menu-item-price">$25</span><button class="add-btn" data-name="Espresso" data-price="25">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Cappuccino</span><span class="menu-item-price">$35/$55</span><button class="add-btn" data-name="Cappuccino" data-price="35">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Americano</span><span class="menu-item-price">$25/$40</span><button class="add-btn" data-name="Americano" data-price="25">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Affogato</span><span class="menu-item-price">$50</span><button class="add-btn" data-name="Affogato" data-price="50">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Spanish latte</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Spanish latte" data-price="45">+</button></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Frappe</h3>
-                <div class="menu-item"><span class="menu-item-name">Oreo</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Frappe Oreo" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Mazapán</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Frappe Mazapán" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Nutella</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Frappe Nutella" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Caramelo</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Frappe Caramelo" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Latte</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Frappe Latte" data-price="45">+</button></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Otras bebidas</h3>
-                <div class="menu-item"><span class="menu-item-name">Limonada c/frutos rojos</span><span class="menu-item-price">$50</span><button class="add-btn" data-name="Limonada c/frutos rojos" data-price="50">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Arizona preparado</span><span class="menu-item-price">$50</span><button class="add-btn" data-name="Arizona preparado" data-price="50">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Coca cola</span><span class="menu-item-price">$25</span><button class="add-btn" data-name="Coca cola" data-price="25">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Agua</span><span class="menu-item-price">$10</span><button class="add-btn" data-name="Agua" data-price="10">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Jugo</span><span class="menu-item-price">$30</span><button class="add-btn" data-name="Jugo" data-price="30">+</button></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Smoothie</h3>
-                <div class="menu-item"><span class="menu-item-name">Taro</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Smoothie Taro" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Fresa</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Smoothie Fresa" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Vainilla</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Smoothie Vainilla" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Plátano</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Smoothie Plátano" data-price="45">+</button></div>
-                <div class="menu-item"><span class="menu-item-name">Matcha</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Smoothie Matcha" data-price="45">+</button></div>
-            </div>
-
-            <div class="menu-category full-width">
-                <h3>Repostería y Postres</h3>
-                <div class="dessert-grid">
-                    <div class="menu-item"><span class="menu-item-name">Spaghetti dulce</span><span class="menu-item-price">$70</span><button class="add-btn" data-name="Spaghetti dulce" data-price="70">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Fresas con crema</span><span class="menu-item-price">$45/$75</span><button class="add-btn" data-name="Fresas con crema" data-price="45">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Buldak preparada</span><span class="menu-item-price">$100</span><button class="add-btn" data-name="Buldak preparada" data-price="100">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Ramen</span><span class="menu-item-price">$60</span><button class="add-btn" data-name="Ramen" data-price="60">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Manzanas preparadas</span><span class="menu-item-price">$70</span><button class="add-btn" data-name="Manzanas preparadas" data-price="70">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Fresas c/crema y oreo</span><span class="menu-item-price">$55/$85</span><button class="add-btn" data-name="Fresas c/crema y oreo" data-price="55">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Mini chocoflan</span><span class="menu-item-price">$25</span><button class="add-btn" data-name="Mini chocoflan" data-price="25">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Hotcakes c/huevo</span><span class="menu-item-price">$90</span><button class="add-btn" data-name="Hotcakes c/huevo" data-price="90">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Fritos con queso</span><span class="menu-item-price">$30/$40</span><button class="add-btn" data-name="Fritos con queso" data-price="30">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Cupcakes</span><span class="menu-item-price">$15</span><button class="add-btn" data-name="Cupcakes" data-price="15">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Comida del día</span><span class="menu-item-price">$120</span><button class="add-btn" data-name="Comida del día" data-price="120">+</button></div>
-                    <div class="menu-item"><span class="menu-item-name">Bubble tea c/tapioca</span><span class="menu-item-price">$45/$70</span><button class="add-btn" data-name="Bubble tea c/tapioca" data-price="45">+</button></div>
-                </div>
-            </div>
+<!-- 🛒 MODAL CARRITO -->
+<div class="cart-modal-overlay" id="cart-overlay">
+    <div class="cart-modal">
+        <div class="cart-header">
+            <h2>Tu Pedido</h2>
+            <button class="close-cart" id="close-cart-btn">&times;</button>
         </div>
-    </section>
 
-    <footer id="contacto">
-        <h2>Visítanos o haz tu pedido</h2>
-        <br>
-        <div class="contact-info">
-            <p>📍 Ocampo 1104 norte local H, Allende, Mexico, 26530</p>
-            <p>📞 878 114 7915</p>
-            <p>🕒 Abierto ahora</p>
+        <div class="cart-items" id="cart-items-container">
+            <p style="text-align:center;">Tu carrito está vacío</p>
         </div>
-        <p>Síguenos en <a href="#" class="social-link">Facebook</a></p>
-        <br>
-        <p class="copyright">© 2026 Bon Appetit. Todos los derechos reservados.</p>
-    </footer>
 
-    <button class="cart-float" id="floating-cart-btn" title="Ver mi pedido">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-        </svg>
-        <span class="floating-cart-badge" id="floating-cart-badge">0</span>
-    </button>
+        <div class="cart-footer">
+            <div class="cart-total-wrap">
+                <h3>Total:</h3>
+                <h3 id="cart-total-price">$0</h3>
+            </div>
 
-    <a href="https://wa.me/528781147915?text=Hola,%20tengo%20una%20duda." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c-.003 1.396.366 2.76 1.062 3.963L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.004-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-        </svg>
-    </a>
+            <button class="btn btn-whatsapp" id="send-order-btn">
+                Enviar pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
 
-    <script src="script.js"></script>
+<!-- 🎯 MODAL VARIANTES -->
+<div class="variant-modal-overlay" id="variant-modal">
+    <div class="variant-modal">
+        <h3 id="variant-title">Selecciona tamaño</h3>
+        <div id="variant-options"></div>
+        <button id="variant-cancel" class="btn">Cancelar</button>
+    </div>
+</div>
+
+<!-- HERO -->
+<section id="inicio" class="hero">
+    <h1>BON APPETIT</h1>
+    <h3>Coffee & Snacks</h3>
+    <p class="slogan">"Ven y degusta el buen sabor de nuestros productos, ¡no te vas a arrepentir!"</p>
+    <a href="#menu" class="btn">Empezar a pedir</a>
+</section>
+
+<!-- 🧠 MENÚ DINÁMICO -->
+<section id="menu" class="menu-section">
+    <h2 class="menu-title">Nuestro Menú</h2>
+
+    <div class="menu-grid" id="menu-container">
+        <!-- 🔥 Aquí se renderiza todo desde menu.json -->
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+    <h2>Visítanos o haz tu pedido</h2>
+    <br>
+    <div class="contact-info">
+        <p>📍 Ocampo 1104 norte local H, Allende, Mexico, 26530</p>
+        <p>📞 878 114 7915</p>
+        <p>🕒 Abierto ahora</p>
+    </div>
+    <p>Síguenos en <a href="#" class="social-link">Facebook</a></p>
+    <br>
+    <p class="copyright">© 2026 Bon Appetit</p>
+</footer>
+
+<!-- 🛒 BOTÓN FLOTANTE CARRITO -->
+<button class="cart-float" id="floating-cart-btn">
+    🛒 <span class="floating-cart-badge" id="floating-cart-badge">0</span>
+</button>
+
+<!-- 💬 WHATSAPP -->
+<a href="https://wa.me/528781147915" class="whatsapp-float" target="_blank">
+    💬
+</a>
+
+<script src="script.js"></script>
+
 </body>
 </html>
