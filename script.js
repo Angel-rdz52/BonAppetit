@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mobileMenuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
         });
+        loadMenu();
     }
 
     // =============================
@@ -194,3 +195,103 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================
     updateCartUI();
 });
+
+// =============================
+// 🔹 CARGAR MENU JSON
+// =============================
+async function loadMenu() {
+    try {
+        const res = await fetch("menu.json");
+        const data = await res.json();
+
+        renderMenu(data.menu);
+    } catch (err) {
+        console.error("Error cargando menú:", err);
+    }
+}
+
+// =============================
+// 🔹 RENDERIZAR MENU
+// =============================
+function renderMenu(menu) {
+
+    const container = document.getElementById("menu-container");
+    container.innerHTML = "";
+
+    menu.forEach(category => {
+
+        const catDiv = document.createElement("div");
+        catDiv.className = "menu-category";
+
+        const title = document.createElement("h3");
+        title.innerText = category.category;
+
+        catDiv.appendChild(title);
+
+        category.items.forEach(item => {
+
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "menu-item";
+
+            let priceText = "";
+
+            if (item.variants) {
+                priceText = `$${item.variants[0].price}/$${item.variants[1].price}`;
+            } else {
+                priceText = `$${item.price}`;
+            }
+
+            itemDiv.innerHTML = `
+                <span class="menu-item-name">${item.name}</span>
+                <span class="menu-item-price">${priceText}</span>
+                <button class="add-btn">+</button>
+            `;
+
+            const btn = itemDiv.querySelector(".add-btn");
+
+            btn.addEventListener("click", () => {
+                handleProduct(item);
+            });
+
+            catDiv.appendChild(itemDiv);
+        });
+
+        container.appendChild(catDiv);
+    });
+}
+
+// =============================
+// 🔹 MANEJAR PRODUCTO
+// =============================
+function handleProduct(product) {
+
+    if (product.variants) {
+        openVariantModal({
+            title: product.name,
+            options: product.variants,
+            onSelect: (opt) => {
+                addToCart(`${product.name} (${opt.label})`, opt.price);
+            }
+        });
+        return;
+    }
+
+    addToCart(product.name, product.price);
+}
+
+// =============================
+// 🔹 AGREGAR AL CARRITO (REUTILIZABLE)
+// =============================
+function addToCart(name, price) {
+
+    const existing = cart.find(p => p.name === name);
+
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ name, price, qty: 1 });
+    }
+
+    updateCartUI();
+    bounceCart();
+}
