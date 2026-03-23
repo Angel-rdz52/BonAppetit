@@ -426,3 +426,32 @@ max-width:650px;
 }
 
 }
+
+/* =========================
+FONDO IMAGEN MENU
+========================= */
+
+.menu-section{
+position:relative; /* necesario para overlay */
+background-image:url("bg-menu.png"); /* ruta de la imagen */
+background-size:cover; /* que cubra todo */
+background-position:center; /* centrar imagen */
+background-repeat:no-repeat; /* evitar repeticion */
+z-index:1; /* mantener contenido arriba */
+}
+
+/* CAPA DE TRANSPARENCIA */
+.menu-section::before{
+content:""; /* pseudo elemento overlay */
+position:absolute; /* cubrir toda la seccion */
+inset:0; /* top left right bottom 0 */
+background:rgba(255,255,255,0.0); /* transparencia (sube 0.0 → 0.6) */
+backdrop-filter:blur(0px); /* blur opcional */
+z-index:-1; /* detrás del contenido */
+}
+
+/* asegurar que el contenido quede encima */
+.menu-section > *{
+position:relative;
+z-index:2;
+}
