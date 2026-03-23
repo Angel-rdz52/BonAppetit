@@ -6,43 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const navMenu = document.getElementById('nav-menu');
 
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-    }
+    mobileMenuBtn?.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
 
     // =============================
     // 🔹 CARRITO
     // =============================
     let cart = [];
 
-    // ELEMENTOS
-    const cartOverlay = document.getElementById('cart-overlay');
-    const openCartBtn = document.getElementById('open-cart-btn');
     const floatingCartBtn = document.getElementById('floating-cart-btn');
-    const closeCartBtn = document.getElementById('close-cart-btn');
-
-    const cartItemsContainer = document.getElementById('cart-items-container');
-    const cartTotalPrice = document.getElementById('cart-total-price');
-
-    const cartBadge = document.getElementById('cart-badge');
     const floatingCartBadge = document.getElementById('floating-cart-badge');
-
-    const sendOrderBtn = document.getElementById('send-order-btn');
-
-    // =============================
-    // 🔹 MODAL CARRITO
-    // =============================
-    const toggleCart = () => cartOverlay.classList.toggle('active');
-
-    openCartBtn?.addEventListener('click', toggleCart);
-    floatingCartBtn?.addEventListener('click', toggleCart);
-    closeCartBtn?.addEventListener('click', toggleCart);
-
-    cartOverlay?.addEventListener('click', (e) => {
-        if (e.target === cartOverlay) toggleCart();
-    });
 
     // =============================
     // 🔹 MODAL VARIANTES
@@ -78,10 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function closeVariantModal() {
-        document.getElementById("variant-modal").classList.remove("active");
+        document.getElementById("variant-modal")
+        .classList.remove("active");
     }
 
-    document.getElementById("variant-cancel")?.addEventListener("click", closeVariantModal);
+    document.getElementById("variant-cancel")
+    ?.addEventListener("click", closeVariantModal);
 
     // =============================
     // 🔹 AGREGAR AL CARRITO
@@ -96,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cart.push({ name, price, qty: 1 });
         }
 
-        updateCartUI();
+        updateBadges();
         bounceCart();
     }
 
@@ -110,7 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 title: product.name,
                 options: product.variants,
                 onSelect: (opt) => {
-                    addToCart(`${product.name} (${opt.label})`, opt.price);
+                    addToCart(
+                        `${product.name} (${opt.label})`,
+                        opt.price
+                    );
                 }
             });
             return;
@@ -145,7 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let priceText = "";
 
                 if (item.variants) {
-                    priceText = `$${item.variants[0].price}/$${item.variants[1].price}`;
+                    priceText =
+                        `$${item.variants[0].price}/$${item.variants[1].price}`;
                 } else {
                     priceText = `$${item.price}`;
                 }
@@ -156,9 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button class="add-btn">+</button>
                 `;
 
-                const btn = itemDiv.querySelector(".add-btn");
-
-                btn.addEventListener("click", () => {
+                itemDiv.querySelector(".add-btn")
+                .addEventListener("click", () => {
                     handleProduct(item);
                 });
 
@@ -174,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================
     async function loadMenu() {
         try {
-            const res = await fetch("menu.json");
+            const res = await fetch("./menu.json?v=" + Date.now());
             const data = await res.json();
             renderMenu(data.menu);
         } catch (err) {
@@ -183,104 +162,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 ACTUALIZAR UI
+    // 🔹 BADGE
     // =============================
-    function updateCartUI() {
-
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
-        let totalItems = 0;
-
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = `<p style="text-align:center;">Tu carrito está vacío</p>`;
-            updateBadges(0);
-            cartTotalPrice.innerText = "$0";
-            return;
-        }
-
-        cart.forEach((item, index) => {
-
-            total += item.price * item.qty;
-            totalItems += item.qty;
-
-            const el = document.createElement('div');
-            el.className = "cart-item";
-
-            el.innerHTML = `
-                <div class="cart-item-info">
-                    <div class="cart-item-title">${item.name}</div>
-                    <div class="cart-item-controls">
-                        <button class="qty-btn" data-action="minus" data-i="${index}">-</button>
-                        <span>${item.qty}</span>
-                        <button class="qty-btn" data-action="plus" data-i="${index}">+</button>
-                    </div>
-                </div>
-                <div class="cart-item-price">$${item.price * item.qty}</div>
-            `;
-
-            cartItemsContainer.appendChild(el);
-        });
-
-        const clearBtn = document.createElement('button');
-        clearBtn.className = "btn";
-        clearBtn.textContent = "Vaciar carrito";
-        clearBtn.style.marginTop = "10px";
-
-        clearBtn.onclick = () => {
-            cart = [];
-            updateCartUI();
-        };
-
-        cartItemsContainer.appendChild(clearBtn);
-
-        updateBadges(totalItems);
-        cartTotalPrice.innerText = `$${total}`;
-    }
-
-    // =============================
-    // 🔹 EVENTOS + Y -
-    // =============================
-    document.addEventListener('click', (e) => {
-
-        if (e.target.dataset.action === "plus") {
-            cart[e.target.dataset.i].qty++;
-        }
-
-        if (e.target.dataset.action === "minus") {
-            const i = e.target.dataset.i;
-            cart[i].qty--;
-
-            if (cart[i].qty <= 0) {
-                cart.splice(i, 1);
-            }
-        }
-
-        updateCartUI();
-    });
-
-    // =============================
-    // 🔹 BADGES
-    // =============================
-    function updateBadges(count) {
-        cartBadge.innerText = count;
-        floatingCartBadge.innerText = count;
+    function updateBadges() {
+        const total = cart.reduce((a,b)=>a+b.qty,0);
+        if(floatingCartBadge)
+            floatingCartBadge.innerText = total;
     }
 
     // =============================
     // 🔹 ANIMACION
     // =============================
     function bounceCart() {
-        [openCartBtn, floatingCartBtn].forEach(btn => {
-            if (!btn) return;
-            btn.style.transform = "scale(1.2)";
-            setTimeout(() => btn.style.transform = "scale(1)", 200);
-        });
+        if (!floatingCartBtn) return;
+
+        floatingCartBtn.style.transform = "scale(1.2)";
+        setTimeout(() =>
+            floatingCartBtn.style.transform = "scale(1)",
+        200);
     }
 
     // =============================
-    // 🔹 WHATSAPP
+    // 🔹 CLICK CARRITO → WHATSAPP
     // =============================
-    sendOrderBtn?.addEventListener('click', () => {
+    floatingCartBtn?.addEventListener("click", () => {
 
         if (cart.length === 0) {
             alert("Tu carrito está vacío");
@@ -297,18 +202,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         text += `\nTotal: $${total}`;
 
-        const url = `https://wa.me/528781147915?text=${encodeURIComponent(text)}`;
-        window.open(url, "_blank");
+        window.open(
+            `https://wa.me/528781147915?text=${encodeURIComponent(text)}`,
+            "_blank"
+        );
 
-        // limpiar carrito después de enviar
         cart = [];
-        updateCartUI();
+        updateBadges();
     });
 
     // =============================
-    // 🔹 INIT
+    // INIT
     // =============================
-    updateCartUI();
-    loadMenu(); // 🔥 IMPORTANTE
+    loadMenu();
 
 });
