@@ -19,6 +19,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const floatingCartBadge = document.getElementById('floating-cart-badge');
 
     // =============================
+    // 🔹 MODAL CARRITO
+    // =============================
+    const cartOverlay = document.getElementById("cart-overlay");
+    const closeCartBtn = document.getElementById("close-cart-btn");
+    const cartItemsContainer = document.getElementById("cart-items-container");
+    const cartTotalPrice = document.getElementById("cart-total-price");
+    const sendOrderBtn = document.getElementById("send-order-btn");
+
+    // abrir modal carrito
+    floatingCartBtn?.addEventListener("click", () => {
+        renderCartModal();
+        cartOverlay.classList.add("active");
+    });
+
+    // cerrar modal
+    closeCartBtn?.addEventListener("click", () => {
+        cartOverlay.classList.remove("active");
+    });
+
+    cartOverlay?.addEventListener("click", (e) => {
+        if (e.target === cartOverlay)
+            cartOverlay.classList.remove("active");
+    });
+
+    // =============================
     // 🔹 MODAL VARIANTES
     // =============================
     function openVariantModal({ title, options, onSelect }) {
@@ -52,12 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function closeVariantModal() {
-        document.getElementById("variant-modal")
-        .classList.remove("active");
+        document
+            .getElementById("variant-modal")
+            .classList.remove("active");
     }
 
-    document.getElementById("variant-cancel")
-    ?.addEventListener("click", closeVariantModal);
+    document
+        .getElementById("variant-cancel")
+        ?.addEventListener("click", closeVariantModal);
 
     // =============================
     // 🔹 AGREGAR AL CARRITO
@@ -136,10 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button class="add-btn">+</button>
                 `;
 
-                itemDiv.querySelector(".add-btn")
-                .addEventListener("click", () => {
-                    handleProduct(item);
-                });
+                itemDiv
+                    .querySelector(".add-btn")
+                    .addEventListener("click", () => {
+                        handleProduct(item);
+                    });
 
                 catDiv.appendChild(itemDiv);
             });
@@ -162,11 +190,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
+    // 🔹 RENDER MODAL CARRITO
+    // =============================
+    function renderCartModal() {
+
+        if (!cartItemsContainer) return;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML =
+                "<p>Tu carrito está vacío</p>";
+            cartTotalPrice.innerText = "$0";
+            return;
+        }
+
+        let html = "";
+        let total = 0;
+
+        cart.forEach((p, i) => {
+
+            total += p.price * p.qty;
+
+            html += `
+            <div class="cart-item">
+                <span>${p.qty}x ${p.name}</span>
+                <span>$${p.price * p.qty}</span>
+            </div>
+            `;
+        });
+
+        cartItemsContainer.innerHTML = html;
+        cartTotalPrice.innerText = "$" + total;
+    }
+
+    // =============================
     // 🔹 BADGE
     // =============================
     function updateBadges() {
-        const total = cart.reduce((a,b)=>a+b.qty,0);
-        if(floatingCartBadge)
+        const total = cart.reduce((a, b) => a + b.qty, 0);
+
+        if (floatingCartBadge)
             floatingCartBadge.innerText = total;
     }
 
@@ -174,18 +236,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔹 ANIMACION
     // =============================
     function bounceCart() {
+
         if (!floatingCartBtn) return;
 
         floatingCartBtn.style.transform = "scale(1.2)";
-        setTimeout(() =>
-            floatingCartBtn.style.transform = "scale(1)",
-        200);
+
+        setTimeout(() => {
+            floatingCartBtn.style.transform = "scale(1)";
+        }, 200);
     }
 
     // =============================
-    // 🔹 CLICK CARRITO → WHATSAPP
+    // 🔹 ENVIAR WHATSAPP
     // =============================
-    floatingCartBtn?.addEventListener("click", () => {
+    sendOrderBtn?.addEventListener("click", () => {
 
         if (cart.length === 0) {
             alert("Tu carrito está vacío");
@@ -196,8 +260,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let total = 0;
 
         cart.forEach(p => {
+
             text += `${p.qty}x ${p.name} = $${p.qty * p.price}\n`;
             total += p.qty * p.price;
+
         });
 
         text += `\nTotal: $${total}`;
@@ -209,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cart = [];
         updateBadges();
+        cartOverlay.classList.remove("active");
     });
 
     // =============================
