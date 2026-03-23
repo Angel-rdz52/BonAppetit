@@ -105,6 +105,12 @@ font-size:3.5rem;
     gap:15px;
 }
 
+.hero p{
+    background: rgba(255,255,255,0.6);
+    padding:5px 10px;
+    border-radius:8px;
+}
+
 /* =========================
 BOTONES
 ========================= */
