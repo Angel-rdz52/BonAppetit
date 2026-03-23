@@ -170,6 +170,38 @@ nav a {
     margin-bottom: 8px;
 }
 
+/* CONTROLES + - DEL CARRITO */
+.cart-controls{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:4px;
+}
+
+.qty-btn{
+width:24px;
+height:24px;
+border:none;
+border-radius:6px;
+background:var(--accent);
+cursor:pointer;
+font-weight:bold;
+}
+
+.qty-btn:hover{
+background:var(--btn-color);
+color:white;
+}
+
+.cart-item{
+display:grid;
+grid-template-columns:1fr auto;
+align-items:center;
+gap:10px;
+padding:8px 0;
+border-bottom:1px solid #eee;
+}
+
 /* Hero */
 .hero { 
     text-align: center; 
