@@ -91,6 +91,85 @@ nav a {
     border: none; 
 }
 
+/* =========================
+   MODAL CARRITO
+========================= */
+
+.cart-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: .25s;
+    z-index: 2000;
+}
+
+.cart-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-modal {
+    background: white;
+    width: 90%;
+    max-width: 420px;
+    max-height: 80vh;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 20px 40px rgba(0,0,0,.2);
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.close-cart {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.cart-items {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.cart-footer {
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.cart-total {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
 /* Hero */
 .hero { 
     text-align: center; 
