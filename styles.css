@@ -81,6 +81,19 @@ background:none;
 border:none;
 }
 
+.menu-title,
+#menu h2,
+.menu h2 {
+    text-align: center;
+    width: 100%;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
 /* =========================
 HERO
 ========================= */
