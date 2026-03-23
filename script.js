@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text += `\nTotal: $${total}`;
 
         window.open(
-            `https://wa.me/528781147915?text=${encodeURIComponent(text)}`,
+            `https://wa.me/528621203922?text=${encodeURIComponent(text)}`,
             "_blank"
         );
 
