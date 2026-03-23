@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // =============================
-    // 🔹 MENU MOVIL
+    // MENU MOVIL
     // =============================
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const navMenu = document.getElementById('nav-menu');
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =============================
-    // 🔹 CARRITO
+    // CARRITO
     // =============================
     let cart = [];
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const floatingCartBadge = document.getElementById('floating-cart-badge');
 
     // =============================
-    // 🔹 MODAL CARRITO
+    // MODAL CARRITO
     // =============================
     const cartOverlay = document.getElementById("cart-overlay");
     const closeCartBtn = document.getElementById("close-cart-btn");
@@ -27,13 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartTotalPrice = document.getElementById("cart-total-price");
     const sendOrderBtn = document.getElementById("send-order-btn");
 
-    // abrir modal carrito
     floatingCartBtn?.addEventListener("click", () => {
         renderCartModal();
         cartOverlay.classList.add("active");
     });
 
-    // cerrar modal
     closeCartBtn?.addEventListener("click", () => {
         cartOverlay.classList.remove("active");
     });
@@ -44,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // =============================
-    // 🔹 MODAL VARIANTES
+    // MODAL VARIANTES
     // =============================
     function openVariantModal({ title, options, onSelect }) {
 
@@ -87,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ?.addEventListener("click", closeVariantModal);
 
     // =============================
-    // 🔹 AGREGAR AL CARRITO
+    // AGREGAR AL CARRITO
     // =============================
     function addToCart(name, price) {
 
@@ -104,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 MANEJAR PRODUCTO
+    // MANEJAR PRODUCTO
     // =============================
     function handleProduct(product) {
 
@@ -126,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 RENDERIZAR MENU
+    // RENDERIZAR MENU
     // =============================
     function renderMenu(menu) {
 
@@ -177,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 CARGAR MENU JSON
+    // CARGAR MENU JSON
     // =============================
     async function loadMenu() {
         try {
@@ -190,11 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 RENDER MODAL CARRITO
+    // RENDER MODAL CARRITO
     // =============================
     function renderCartModal() {
-
-        if (!cartItemsContainer) return;
 
         if (cart.length === 0) {
             cartItemsContainer.innerHTML =
@@ -212,18 +208,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
             html += `
             <div class="cart-item">
-                <span>${p.qty}x ${p.name}</span>
-                <span>$${p.price * p.qty}</span>
+                
+                <div>
+                    <div>${p.name}</div>
+                    
+                    <div class="cart-controls">
+                        <button class="qty-btn" data-minus="${i}">-</button>
+                        <span>${p.qty}</span>
+                        <button class="qty-btn" data-plus="${i}">+</button>
+                    </div>
+                </div>
+
+                <div>$${p.price * p.qty}</div>
+
             </div>
             `;
         });
+
+        html += `
+        <button id="clear-cart" class="btn" style="width:100%;margin-top:10px">
+            Vaciar carrito
+        </button>
+        `;
 
         cartItemsContainer.innerHTML = html;
         cartTotalPrice.innerText = "$" + total;
     }
 
     // =============================
-    // 🔹 BADGE
+    // + -
+    // =============================
+    document.addEventListener("click", (e) => {
+
+        if (e.target.dataset.plus !== undefined) {
+
+            cart[e.target.dataset.plus].qty++;
+            renderCartModal();
+            updateBadges();
+        }
+
+        if (e.target.dataset.minus !== undefined) {
+
+            const i = e.target.dataset.minus;
+            cart[i].qty--;
+
+            if (cart[i].qty <= 0)
+                cart.splice(i, 1);
+
+            renderCartModal();
+            updateBadges();
+        }
+
+        if (e.target.id === "clear-cart") {
+            cart = [];
+            renderCartModal();
+            updateBadges();
+        }
+
+    });
+
+    // =============================
+    // BADGE
     // =============================
     function updateBadges() {
         const total = cart.reduce((a, b) => a + b.qty, 0);
@@ -233,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 ANIMACION
+    // ANIMACION
     // =============================
     function bounceCart() {
 
@@ -247,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // 🔹 ENVIAR WHATSAPP
+    // ENVIAR WHATSAPP
     // =============================
     sendOrderBtn?.addEventListener("click", () => {
 
@@ -260,10 +305,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let total = 0;
 
         cart.forEach(p => {
-
             text += `${p.qty}x ${p.name} = $${p.qty * p.price}\n`;
             total += p.qty * p.price;
-
         });
 
         text += `\nTotal: $${total}`;
@@ -278,9 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cartOverlay.classList.remove("active");
     });
 
-    // =============================
     // INIT
-    // =============================
     loadMenu();
 
 });
