@@ -1,36 +1,107 @@
 // ===============================
-// URL JSON (RAW GITHUB)
+// CONFIGURACION
 // ===============================
 
-const JSON_URL = "https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/ModMenu/menuTest.json";
+const OWNER = "Angel-rdz52";
+const REPO = "BonAppetit";
+const PATH = "ModMenu/menuTest.json";
+const BRANCH = "main";
+
+/* ===================================================== */
+/* 🔴 PEGA TU TOKEN AQUI (LINEA IMPORTANTE) */
+/* ===================================================== */
+const TOKEN = "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";
+/* ===================================================== */
+
+
+const JSON_URL =
+`https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/ModMenu/menuTest.json`;
 
 let data = { menu: [] };
 
 
 // ===============================
-// CARGA AUTOMÁTICA
+// CARGAR JSON AUTOMATICAMENTE
 // ===============================
 
 async function loadJSON() {
-  try {
 
-    const res = await fetch(JSON_URL);
+try {
 
-    if (!res.ok) throw new Error("No se pudo cargar JSON");
+const res = await fetch(JSON_URL);
+data = await res.json();
 
-    data = await res.json();
+render();
 
-    render();
+} catch (error) {
 
-  } catch (error) {
+console.error(error);
+alert("Error cargando menú");
 
-    console.error(error);
-    alert("Error cargando menú");
+}
 
-  }
 }
 
 loadJSON();
+
+
+// ===============================
+// GUARDAR EN GITHUB
+// ===============================
+
+async function saveToGitHub(){
+
+try{
+
+// obtener SHA actual
+const get = await fetch(
+`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+{
+headers:{
+Authorization:`token ${TOKEN}`
+}
+}
+);
+
+const file = await get.json();
+
+// convertir a base64
+const content = btoa(
+unescape(
+encodeURIComponent(
+JSON.stringify(data,null,2)
+)
+)
+);
+
+// subir archivo
+await fetch(
+`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+{
+method:"PUT",
+headers:{
+Authorization:`token ${TOKEN}`,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"Actualizar menú desde editor",
+content:content,
+sha:file.sha,
+branch:BRANCH
+})
+}
+);
+
+alert("Guardado en GitHub ✔");
+
+}catch(e){
+
+console.error(e);
+alert("Error guardando en GitHub");
+
+}
+
+}
 
 
 // ===============================
@@ -40,42 +111,37 @@ loadJSON();
 function render(){
 
 const container = document.getElementById("menu");
-container.innerHTML = "";
+container.innerHTML="";
 
 data.menu.forEach((category, cIndex)=>{
 
-// =====================
-// CATEGORY
-// =====================
-
 const catDiv = document.createElement("div");
-catDiv.className = "category";
+catDiv.className="category";
 
 const header = document.createElement("div");
-header.className = "category-header";
+header.className="category-header";
 
 const title = document.createElement("input");
-title.className = "category-title";
+title.className="category-title";
 title.value = category.category;
-title.placeholder = "Nombre de categoría";
 
-title.oninput = () => {
+title.oninput = ()=>{
 category.category = title.value;
 };
 
 const actions = document.createElement("div");
 
 const addBtn = document.createElement("button");
-addBtn.innerText = "+ Producto";
-addBtn.className = "add-btn";
-addBtn.onclick = ()=> addItem(cIndex);
+addBtn.innerText="+ Producto";
+addBtn.className="add-btn";
+addBtn.onclick=()=>addItem(cIndex);
 
 const deleteBtn = document.createElement("button");
-deleteBtn.innerText = "Eliminar";
-deleteBtn.className = "delete-btn";
+deleteBtn.innerText="Eliminar";
+deleteBtn.className="delete-btn";
 
-deleteBtn.onclick = ()=>{
-if(confirm("¿Eliminar categoría completa?")){
+deleteBtn.onclick=()=>{
+if(confirm("Eliminar categoría completa?")){
 data.menu.splice(cIndex,1);
 render();
 }
@@ -90,42 +156,27 @@ header.appendChild(actions);
 catDiv.appendChild(header);
 
 
-// =====================
-// ITEMS
-// =====================
+// ================= ITEMS =================
 
 category.items.forEach((item, iIndex)=>{
 
 const itemDiv = document.createElement("div");
-itemDiv.className = "item";
+itemDiv.className="item";
 
-
-// =====================
-// NAME
-// =====================
-
+// nombre
 const name = document.createElement("input");
 name.value = item.name;
-name.placeholder = "Nombre del producto";
 
-name.oninput = ()=>{
-item.name = name.value;
+name.oninput=()=>{
+item.name=name.value;
 };
 
 itemDiv.appendChild(name);
 
 
-// =====================
-// PRICE GROUP
-// =====================
-
+// precios
 const priceGroup = document.createElement("div");
-priceGroup.className = "price-group";
-
-
-// =====================
-// VARIANTS
-// =====================
+priceGroup.className="price-group";
 
 if(item.variants){
 
@@ -133,49 +184,46 @@ let ch = item.variants.find(v=>v.label==="CH");
 let g  = item.variants.find(v=>v.label==="G");
 
 // CH
-const chInput = document.createElement("input");
+const chInput=document.createElement("input");
 chInput.type="number";
 chInput.placeholder="CH";
-chInput.value = ch ? ch.price : "";
+chInput.value=ch?ch.price:"";
 
-chInput.oninput = ()=>{
+chInput.oninput=()=>{
 if(!ch){
 item.variants.push({label:"CH",price:0});
-ch = item.variants.find(v=>v.label==="CH");
+ch=item.variants.find(v=>v.label==="CH");
 }
-ch.price = parseFloat(chInput.value);
+ch.price=parseFloat(chInput.value);
 };
 
 priceGroup.appendChild(chInput);
 
 
 // G
-const gInput = document.createElement("input");
+const gInput=document.createElement("input");
 gInput.type="number";
 gInput.placeholder="G";
-gInput.value = g ? g.price : "";
+gInput.value=g?g.price:"";
 
-gInput.oninput = ()=>{
+gInput.oninput=()=>{
 if(!g){
 item.variants.push({label:"G",price:0});
-g = item.variants.find(v=>v.label==="G");
+g=item.variants.find(v=>v.label==="G");
 }
-g.price = parseFloat(gInput.value);
+g.price=parseFloat(gInput.value);
 };
 
 priceGroup.appendChild(gInput);
 
-}
-else{
+}else{
 
-// precio único
-const price = document.createElement("input");
+const price=document.createElement("input");
 price.type="number";
-price.placeholder="Precio";
-price.value = item.price || "";
+price.value=item.price||"";
 
-price.oninput = ()=>{
-item.price = parseFloat(price.value);
+price.oninput=()=>{
+item.price=parseFloat(price.value);
 };
 
 priceGroup.appendChild(price);
@@ -183,17 +231,12 @@ priceGroup.appendChild(document.createElement("div"));
 
 }
 
+const del=document.createElement("button");
+del.innerText="Eliminar";
+del.className="delete-btn";
 
-// =====================
-// DELETE ITEM
-// =====================
-
-const del = document.createElement("button");
-del.innerText = "Eliminar";
-del.className = "delete-btn";
-
-del.onclick = ()=>{
-if(confirm("¿Eliminar producto?")){
+del.onclick=()=>{
+if(confirm("Eliminar producto?")){
 category.items.splice(iIndex,1);
 render();
 }
@@ -214,7 +257,7 @@ container.appendChild(catDiv);
 
 
 // ===============================
-// AGREGAR CATEGORIA
+// AGREGAR
 // ===============================
 
 function addCategory(){
@@ -228,15 +271,10 @@ render();
 
 }
 
-
-// ===============================
-// AGREGAR PRODUCTO
-// ===============================
-
 function addItem(cIndex){
 
-const type = confirm(
-"Aceptar = con tamaños CH / G\nCancelar = precio único"
+const type=confirm(
+"Aceptar = CH/G\nCancelar = precio único"
 );
 
 if(type){
@@ -249,8 +287,7 @@ variants:[
 ]
 });
 
-}
-else{
+}else{
 
 data.menu[cIndex].items.push({
 name:"Nuevo producto",
@@ -260,24 +297,5 @@ price:0
 }
 
 render();
-
-}
-
-
-// ===============================
-// DESCARGAR JSON
-// ===============================
-
-function downloadJSON(){
-
-const blob = new Blob(
-[JSON.stringify(data,null,2)],
-{type:"application/json"}
-);
-
-const a = document.createElement("a");
-a.href = URL.createObjectURL(blob);
-a.download="menu.json";
-a.click();
 
 }
