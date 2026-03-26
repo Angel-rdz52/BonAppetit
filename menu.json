@@ -121,9 +121,9 @@
     {
       "category": "Repostería y Postres",
       "items": [
-        { "name": "Spaghetti dulce", "price": 70 },
+        { "name": "Spaghetti o Sushi dulce", "price": 70 },
         {
-          "name": "Fresas con crema",
+          "name": "Fresas o mango con crema",
           "variants": [
             { "label": "CH", "price": 45 },
             { "label": "G", "price": 75 }
