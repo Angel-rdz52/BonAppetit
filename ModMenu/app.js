@@ -1,13 +1,33 @@
+// URL RAW del JSON en GitHub
+const JSON_URL = "https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/menu.json";
+
 let data = { menu: [] };
 
-document.getElementById("fileInput").addEventListener("change", function(e){
-  const reader = new FileReader();
-  reader.onload = function(e){
-    data = JSON.parse(e.target.result);
+/* ========================= */
+/* CARGA AUTOMÁTICA */
+/* ========================= */
+
+async function loadJSON() {
+  try {
+    const res = await fetch(JSON_URL);
+
+    if (!res.ok) throw new Error("No se pudo cargar el JSON");
+
+    data = await res.json();
     render();
-  };
-  reader.readAsText(e.target.files[0]);
-});
+
+  } catch (error) {
+    console.error(error);
+    alert("Error cargando el menú desde GitHub");
+  }
+}
+
+// Ejecutar al abrir
+loadJSON();
+
+/* ========================= */
+/* RENDER */
+/* ========================= */
 
 function render(){
 
@@ -126,7 +146,9 @@ container.appendChild(catDiv);
 
 }
 
-/* add category */
+/* ========================= */
+/* AGREGAR CATEGORÍA */
+/* ========================= */
 
 function addCategory(){
 data.menu.push({
@@ -136,7 +158,9 @@ items:[]
 render();
 }
 
-/* add item */
+/* ========================= */
+/* AGREGAR PRODUCTO */
+/* ========================= */
 
 function addItem(cIndex){
 
@@ -164,7 +188,9 @@ price:0
 render();
 }
 
-/* download */
+/* ========================= */
+/* DESCARGAR JSON */
+/* ========================= */
 
 function downloadJSON(){
 
