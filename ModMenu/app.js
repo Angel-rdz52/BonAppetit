@@ -1,67 +1,84 @@
-// URL RAW del JSON en GitHub
+// ===============================
+// URL JSON (RAW GITHUB)
+// ===============================
+
 const JSON_URL = "https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/ModMenu/menuTest.json";
 
 let data = { menu: [] };
 
-/* ========================= */
-/* CARGA AUTOMÁTICA */
-/* ========================= */
+
+// ===============================
+// CARGA AUTOMÁTICA
+// ===============================
 
 async function loadJSON() {
   try {
+
     const res = await fetch(JSON_URL);
 
-    if (!res.ok) throw new Error("No se pudo cargar el JSON");
+    if (!res.ok) throw new Error("No se pudo cargar JSON");
 
     data = await res.json();
+
     render();
 
   } catch (error) {
+
     console.error(error);
-    alert("Error cargando el menú desde GitHub");
+    alert("Error cargando menú");
+
   }
 }
 
-// Ejecutar al abrir
 loadJSON();
 
-/* ========================= */
-/* RENDER */
-/* ========================= */
+
+// ===============================
+// RENDER
+// ===============================
 
 function render(){
 
 const container = document.getElementById("menu");
-container.innerHTML="";
+container.innerHTML = "";
 
 data.menu.forEach((category, cIndex)=>{
 
-const catDiv = document.createElement("div");
-catDiv.className="category";
+// =====================
+// CATEGORY
+// =====================
 
-/* header */
+const catDiv = document.createElement("div");
+catDiv.className = "category";
 
 const header = document.createElement("div");
-header.className="category-header";
+header.className = "category-header";
 
 const title = document.createElement("input");
+title.className = "category-title";
 title.value = category.category;
-title.className="category-title";
-title.oninput = ()=> category.category = title.value;
+title.placeholder = "Nombre de categoría";
+
+title.oninput = () => {
+category.category = title.value;
+};
 
 const actions = document.createElement("div");
 
 const addBtn = document.createElement("button");
-addBtn.innerText="+ Producto";
-addBtn.className="add-btn";
+addBtn.innerText = "+ Producto";
+addBtn.className = "add-btn";
 addBtn.onclick = ()=> addItem(cIndex);
 
 const deleteBtn = document.createElement("button");
-deleteBtn.innerText="Eliminar";
-deleteBtn.className="delete-btn";
+deleteBtn.innerText = "Eliminar";
+deleteBtn.className = "delete-btn";
+
 deleteBtn.onclick = ()=>{
+if(confirm("¿Eliminar categoría completa?")){
 data.menu.splice(cIndex,1);
 render();
+}
 };
 
 actions.appendChild(addBtn);
@@ -72,69 +89,118 @@ header.appendChild(actions);
 
 catDiv.appendChild(header);
 
-/* items */
+
+// =====================
+// ITEMS
+// =====================
 
 category.items.forEach((item, iIndex)=>{
 
 const itemDiv = document.createElement("div");
-itemDiv.className="item";
+itemDiv.className = "item";
 
-/* name */
+
+// =====================
+// NAME
+// =====================
 
 const name = document.createElement("input");
 name.value = item.name;
-name.oninput = ()=> item.name = name.value;
+name.placeholder = "Nombre del producto";
+
+name.oninput = ()=>{
+item.name = name.value;
+};
 
 itemDiv.appendChild(name);
 
-/* prices */
+
+// =====================
+// PRICE GROUP
+// =====================
 
 const priceGroup = document.createElement("div");
-priceGroup.className="price-group";
+priceGroup.className = "price-group";
+
+
+// =====================
+// VARIANTS
+// =====================
 
 if(item.variants){
 
-item.variants.forEach((v)=>{
+let ch = item.variants.find(v=>v.label==="CH");
+let g  = item.variants.find(v=>v.label==="G");
 
-const label = document.createElement("span");
-label.innerText = v.label;
+// CH
+const chInput = document.createElement("input");
+chInput.type="number";
+chInput.placeholder="CH";
+chInput.value = ch ? ch.price : "";
 
-const input = document.createElement("input");
-input.type="number";
-input.value=v.price;
+chInput.oninput = ()=>{
+if(!ch){
+item.variants.push({label:"CH",price:0});
+ch = item.variants.find(v=>v.label==="CH");
+}
+ch.price = parseFloat(chInput.value);
+};
 
-input.oninput = ()=> v.price = parseFloat(input.value);
+priceGroup.appendChild(chInput);
 
-priceGroup.appendChild(label);
-priceGroup.appendChild(input);
 
-});
+// G
+const gInput = document.createElement("input");
+gInput.type="number";
+gInput.placeholder="G";
+gInput.value = g ? g.price : "";
 
-}else{
+gInput.oninput = ()=>{
+if(!g){
+item.variants.push({label:"G",price:0});
+g = item.variants.find(v=>v.label==="G");
+}
+g.price = parseFloat(gInput.value);
+};
 
-const input = document.createElement("input");
-input.type="number";
-input.value=item.price;
+priceGroup.appendChild(gInput);
 
-input.oninput = ()=> item.price = parseFloat(input.value);
+}
+else{
 
-priceGroup.appendChild(input);
+// precio único
+const price = document.createElement("input");
+price.type="number";
+price.placeholder="Precio";
+price.value = item.price || "";
+
+price.oninput = ()=>{
+item.price = parseFloat(price.value);
+};
+
+priceGroup.appendChild(price);
+priceGroup.appendChild(document.createElement("div"));
 
 }
 
-/* delete */
+
+// =====================
+// DELETE ITEM
+// =====================
 
 const del = document.createElement("button");
-del.innerText="X";
-del.className="delete-btn";
-del.onclick=()=>{
+del.innerText = "Eliminar";
+del.className = "delete-btn";
+
+del.onclick = ()=>{
+if(confirm("¿Eliminar producto?")){
 category.items.splice(iIndex,1);
 render();
+}
 };
 
-priceGroup.appendChild(del);
-
 itemDiv.appendChild(priceGroup);
+itemDiv.appendChild(del);
 
 catDiv.appendChild(itemDiv);
 
@@ -146,25 +212,32 @@ container.appendChild(catDiv);
 
 }
 
-/* ========================= */
-/* AGREGAR CATEGORÍA */
-/* ========================= */
+
+// ===============================
+// AGREGAR CATEGORIA
+// ===============================
 
 function addCategory(){
+
 data.menu.push({
 category:"Nueva categoría",
 items:[]
 });
+
 render();
+
 }
 
-/* ========================= */
-/* AGREGAR PRODUCTO */
-/* ========================= */
+
+// ===============================
+// AGREGAR PRODUCTO
+// ===============================
 
 function addItem(cIndex){
 
-const type = confirm("Aceptar = con tamaños CH/G\nCancelar = precio único");
+const type = confirm(
+"Aceptar = con tamaños CH / G\nCancelar = precio único"
+);
 
 if(type){
 
@@ -176,7 +249,8 @@ variants:[
 ]
 });
 
-}else{
+}
+else{
 
 data.menu[cIndex].items.push({
 name:"Nuevo producto",
@@ -186,11 +260,13 @@ price:0
 }
 
 render();
+
 }
 
-/* ========================= */
-/* DESCARGAR JSON */
-/* ========================= */
+
+// ===============================
+// DESCARGAR JSON
+// ===============================
 
 function downloadJSON(){
 
