@@ -1,5 +1,5 @@
 // URL RAW del JSON en GitHub
-const JSON_URL = "https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/menu.json";
+const JSON_URL = "https://raw.githubusercontent.com/Angel-rdz52/BonAppetit/main/ModMenu/menuTest.json";
 
 let data = { menu: [] };
 
