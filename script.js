@@ -175,111 +175,78 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // CARGAR MENU JSON
+    // CARGAR MENU GOOGLE SHEETS
     // =============================
     async function loadMenu() {
         try {
-            const res = await fetch("./menu.json?v=" + Date.now());
-            const data = await res.json();
+
+            const res = await fetch(
+                "https://opensheet.elk.sh/1vLqcqnzorzWeUAWrc51NvdKLPsg1K-d2SsTVdwvQu-g/menu"
+            );
+
+            const rows = await res.json();
+
+            const data = { menu: [] };
+
+            rows.forEach(r => {
+
+                if (!r.Categoria) return;
+
+                let cat = data.menu.find(
+                    c => c.category === r.Categoria
+                );
+
+                if (!cat) {
+                    cat = {
+                        category: r.Categoria,
+                        items: []
+                    };
+                    data.menu.push(cat);
+                }
+
+                let item = cat.items.find(
+                    i => i.name === r.Productos
+                );
+
+                if (!item) {
+                    item = { name: r.Productos };
+                    cat.items.push(item);
+                }
+
+                if (r.Tamaño) {
+
+                    if (!item.variants)
+                        item.variants = [];
+
+                    item.variants.push({
+                        label: r.Tamaño,
+                        price: parseFloat(r.Precio)
+                    });
+
+                } else {
+
+                    item.price = parseFloat(r.Precio);
+
+                }
+
+            });
+
             renderMenu(data.menu);
+
         } catch (err) {
             console.error("Error cargando menú:", err);
         }
     }
 
     // =============================
-    // RENDER MODAL CARRITO
-    // =============================
-    function renderCartModal() {
-
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML =
-                "<p>Tu carrito está vacío</p>";
-            cartTotalPrice.innerText = "$0";
-            return;
-        }
-
-        let html = "";
-        let total = 0;
-
-        cart.forEach((p, i) => {
-
-            total += p.price * p.qty;
-
-            html += `
-            <div class="cart-item">
-                
-                <div>
-                    <div>${p.name}</div>
-                    
-                    <div class="cart-controls">
-                        <button class="qty-btn" data-minus="${i}">-</button>
-                        <span>${p.qty}</span>
-                        <button class="qty-btn" data-plus="${i}">+</button>
-                    </div>
-                </div>
-
-                <div>$${p.price * p.qty}</div>
-
-            </div>
-            `;
-        });
-
-        html += `
-        <button id="clear-cart" class="btn" style="width:100%;margin-top:10px">
-            Vaciar carrito
-        </button>
-        `;
-
-        cartItemsContainer.innerHTML = html;
-        cartTotalPrice.innerText = "$" + total;
-    }
-
-    // =============================
-    // + -
-    // =============================
-    document.addEventListener("click", (e) => {
-
-        if (e.target.dataset.plus !== undefined) {
-
-            cart[e.target.dataset.plus].qty++;
-            renderCartModal();
-            updateBadges();
-        }
-
-        if (e.target.dataset.minus !== undefined) {
-
-            const i = e.target.dataset.minus;
-            cart[i].qty--;
-
-            if (cart[i].qty <= 0)
-                cart.splice(i, 1);
-
-            renderCartModal();
-            updateBadges();
-        }
-
-        if (e.target.id === "clear-cart") {
-            cart = [];
-            renderCartModal();
-            updateBadges();
-        }
-
-    });
-
-    // =============================
     // BADGE
     // =============================
     function updateBadges() {
         const total = cart.reduce((a, b) => a + b.qty, 0);
-
         if (floatingCartBadge)
             floatingCartBadge.innerText = total;
     }
 
-    // =============================
-    // ANIMACION
-    // =============================
     function bounceCart() {
 
         if (!floatingCartBtn) return;
@@ -292,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // ENVIAR WHATSAPP
+    // WHATSAPP
     // =============================
     sendOrderBtn?.addEventListener("click", () => {
 
@@ -321,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cartOverlay.classList.remove("active");
     });
 
-    // INIT
     loadMenu();
 
 });
