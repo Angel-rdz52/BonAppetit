@@ -233,4 +233,127 @@ else{
 
 const price=document.createElement("input");
 price.type="number";
-price.value=item.price
+price.value=item.price||"";
+
+price.oninput=()=>{
+item.price=parseFloat(price.value);
+};
+
+priceGroup.appendChild(price);
+
+
+// CONVERT
+
+const convert=document.createElement("button");
+convert.innerText="+ Tamaños";
+
+convert.onclick=()=>{
+
+console.log("Convertir a variantes");
+
+item.variants=[
+{label:"CH",price:item.price||0},
+{label:"G",price:item.price||0}
+];
+
+delete item.price;
+
+render();
+
+};
+
+priceGroup.appendChild(convert);
+
+}
+
+
+// DELETE PRODUCT
+
+const del=document.createElement("button");
+del.innerText="Eliminar";
+
+del.onclick=()=>{
+
+console.log("Eliminar producto",iIndex);
+
+if(confirm("Eliminar producto?")){
+
+category.items.splice(iIndex,1);
+
+render();
+
+}
+
+};
+
+row.appendChild(priceGroup);
+row.appendChild(del);
+
+cat.appendChild(row);
+
+});
+
+
+// FOOTER BUTTONS
+
+const footer=document.createElement("div");
+
+const addBtn=document.createElement("button");
+addBtn.innerText="+ Producto";
+
+addBtn.onclick=()=>{
+
+console.log("Agregar producto",cIndex);
+
+category.items.push({
+name:"Nuevo producto",
+price:0
+});
+
+render();
+
+};
+
+const delCat=document.createElement("button");
+delCat.innerText="Eliminar categoría";
+
+delCat.onclick=()=>{
+
+if(confirm("Eliminar categoría completa?")){
+
+data.menu.splice(cIndex,1);
+
+render();
+
+}
+
+};
+
+footer.appendChild(addBtn);
+footer.appendChild(delCat);
+
+cat.appendChild(footer);
+
+container.appendChild(cat);
+
+});
+
+}
+
+
+// ===============================
+// ADD CATEGORY
+// ===============================
+
+function addCategory(){
+
+console.log("Agregar categoría");
+
+data.menu.push({
+category:"Nueva categoría",
+items:[]
+});
+
+render();
+
+}
