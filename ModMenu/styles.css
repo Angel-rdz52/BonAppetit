@@ -154,6 +154,7 @@ button {
 
 .save-floating {
   position: fixed;
+  width: 50px;
   bottom: 20px;
   right: 20px;
   background: var(--primary);
