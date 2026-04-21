@@ -174,6 +174,69 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function renderCartModal() {
+
+    if (!cartItemsContainer) return;
+
+    cartItemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "Tu carrito está vacío";
+        cartTotalPrice.innerText = "$0";
+        return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+
+        const itemTotal = item.qty * item.price;
+        total += itemTotal;
+
+        div.innerHTML = `
+            <div>
+                <strong>${item.name}</strong>
+                <div class="cart-controls">
+                    <button class="qty-btn" data-index="${index}" data-action="dec">-</button>
+                    <span>${item.qty}</span>
+                    <button class="qty-btn" data-index="${index}" data-action="inc">+</button>
+                </div>
+            </div>
+
+            <div>$${itemTotal}</div>
+        `;
+
+        cartItemsContainer.appendChild(div);
+    });
+
+    cartTotalPrice.innerText = `$${total}`;
+
+    // eventos + y -
+    document.querySelectorAll(".qty-btn").forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+            const i = btn.dataset.index;
+            const action = btn.dataset.action;
+
+            if (action === "inc") {
+                cart[i].qty++;
+            } else {
+                cart[i].qty--;
+                if (cart[i].qty <= 0) {
+                    cart.splice(i, 1);
+                }
+            }
+
+            updateBadges();
+            renderCartModal();
+        });
+    });
+    }
+
     // =============================
     // CARGAR MENU GOOGLE SHEETS
     // =============================
