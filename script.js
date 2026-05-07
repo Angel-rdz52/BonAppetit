@@ -37,8 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     cartOverlay?.addEventListener("click", (e) => {
-        if (e.target === cartOverlay)
+        if (e.target === cartOverlay) {
             cartOverlay.classList.remove("active");
+        }
     });
 
     // =============================
@@ -59,8 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.className = "variant-option";
 
             btn.innerHTML = `
-                <div style="font-size:1.2rem">${opt.label}</div>
-                <div>$${opt.price}</div>
+                <div style="font-size:1.1rem;font-weight:600;">
+                    ${opt.label}
+                </div>
+
+                <div>
+                    $${opt.price}
+                </div>
             `;
 
             btn.onclick = () => {
@@ -94,7 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (existing) {
             existing.qty++;
         } else {
-            cart.push({ name, price, qty: 1 });
+            cart.push({
+                name,
+                price,
+                qty: 1
+            });
         }
 
         updateBadges();
@@ -106,17 +116,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================
     function handleProduct(product) {
 
-        if (product.variants) {
+        if (product.variants && product.variants.length > 0) {
+
             openVariantModal({
                 title: product.name,
                 options: product.variants,
                 onSelect: (opt) => {
+
                     addToCart(
                         `${product.name} (${opt.label})`,
                         opt.price
                     );
+
                 }
             });
+
             return;
         }
 
@@ -124,11 +138,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================
-    // RENDERIZAR MENU
+    // RENDER MENU
     // =============================
     function renderMenu(menu) {
 
         const container = document.getElementById("menu-container");
+
         container.innerHTML = "";
 
         menu.forEach(category => {
@@ -148,17 +163,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 let priceText = "";
 
-                if (item.variants) {
-                    priceText =
-                        `$${item.variants[0].price}/$${item.variants[1].price}`;
+                if (item.variants && item.variants.length > 0) {
+
+                    priceText = item.variants
+                        .map(v => `$${v.price}`)
+                        .join("/");
+
                 } else {
+
                     priceText = `$${item.price}`;
+
                 }
 
                 itemDiv.innerHTML = `
-                    <span class="menu-item-name">${item.name}</span>
-                    <span class="menu-item-price">${priceText}</span>
-                    <button class="add-btn">+</button>
+                    <span class="menu-item-name">
+                        ${item.name}
+                    </span>
+
+                    <span class="menu-item-price">
+                        ${priceText}
+                    </span>
+
+                    <button class="add-btn">
+                        +
+                    </button>
                 `;
 
                 itemDiv
@@ -168,79 +196,120 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                 catDiv.appendChild(itemDiv);
+
             });
 
             container.appendChild(catDiv);
+
         });
     }
 
+    // =============================
+    // RENDER CARRITO
+    // =============================
     function renderCartModal() {
 
-    if (!cartItemsContainer) return;
+        if (!cartItemsContainer) return;
 
-    cartItemsContainer.innerHTML = "";
+        cartItemsContainer.innerHTML = "";
 
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "Tu carrito está vacío";
-        cartTotalPrice.innerText = "$0";
-        return;
-    }
+        if (cart.length === 0) {
 
-    let total = 0;
+            cartItemsContainer.innerHTML =
+                "Tu carrito está vacío";
 
-    cart.forEach((item, index) => {
+            cartTotalPrice.innerText = "$0";
 
-        const div = document.createElement("div");
-        div.className = "cart-item";
+            return;
+        }
 
-        const itemTotal = item.qty * item.price;
-        total += itemTotal;
+        let total = 0;
 
-        div.innerHTML = `
-            <div>
-                <strong>${item.name}</strong>
-                <div class="cart-controls">
-                    <button class="qty-btn" data-index="${index}" data-action="dec">-</button>
-                    <span>${item.qty}</span>
-                    <button class="qty-btn" data-index="${index}" data-action="inc">+</button>
+        cart.forEach((item, index) => {
+
+            const itemTotal = item.qty * item.price;
+
+            total += itemTotal;
+
+            const div = document.createElement("div");
+
+            div.className = "cart-item";
+
+            div.innerHTML = `
+                <div>
+
+                    <strong>${item.name}</strong>
+
+                    <div class="cart-controls">
+
+                        <button
+                            class="qty-btn"
+                            data-index="${index}"
+                            data-action="dec"
+                        >
+                            -
+                        </button>
+
+                        <span>${item.qty}</span>
+
+                        <button
+                            class="qty-btn"
+                            data-index="${index}"
+                            data-action="inc"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
                 </div>
-            </div>
 
-            <div>$${itemTotal}</div>
-        `;
+                <div>
+                    $${itemTotal}
+                </div>
+            `;
 
-        cartItemsContainer.appendChild(div);
-    });
+            cartItemsContainer.appendChild(div);
 
-    cartTotalPrice.innerText = `$${total}`;
-
-    // eventos + y -
-    document.querySelectorAll(".qty-btn").forEach(btn => {
-
-        btn.addEventListener("click", () => {
-
-            const i = btn.dataset.index;
-            const action = btn.dataset.action;
-
-            if (action === "inc") {
-                cart[i].qty++;
-            } else {
-                cart[i].qty--;
-                if (cart[i].qty <= 0) {
-                    cart.splice(i, 1);
-                }
-            }
-
-            updateBadges();
-            renderCartModal();
         });
-    });
+
+        cartTotalPrice.innerText = `$${total}`;
+
+        // botones + -
+        document.querySelectorAll(".qty-btn").forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                const i = btn.dataset.index;
+                const action = btn.dataset.action;
+
+                if (action === "inc") {
+
+                    cart[i].qty++;
+
+                } else {
+
+                    cart[i].qty--;
+
+                    if (cart[i].qty <= 0) {
+                        cart.splice(i, 1);
+                    }
+                }
+
+                updateBadges();
+                renderCartModal();
+
+            });
+
+        });
+
     }
 
     // =============================
-    // CARGAR MENU GOOGLE SHEETS
+    // GOOGLE SHEETS
     // =============================
     async function loadMenu() {
+
         try {
 
             const res = await fetch(
@@ -249,76 +318,103 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const rows = await res.json();
 
-            const data = { menu: [] };
+            const categories = {};
 
             rows.forEach(r => {
 
-                if (!r.Categoria) return;
+                const categoria = (r.Categoria || "").trim();
+                const producto = (r.Productos || "").trim();
+                const tamaño = (r.Tamaño || "").trim();
+                const precio = parseFloat(r.Precio);
 
-                let cat = data.menu.find(
-                    c => c.category === r.Categoria
-                );
+                if (!categoria || !producto) return;
 
-                if (!cat) {
-                    cat = {
-                        category: r.Categoria,
+                if (!categories[categoria]) {
+
+                    categories[categoria] = {
+                        category: categoria,
                         items: []
                     };
-                    data.menu.push(cat);
+
                 }
 
-                let item = cat.items.find(
-                    i => i.name === r.Productos
-                );
+                let existingItem =
+                    categories[categoria].items.find(
+                        i => i.name === producto
+                    );
 
-                if (!item) {
-                    item = { name: r.Productos };
-                    cat.items.push(item);
+                // crear producto
+                if (!existingItem) {
+
+                    existingItem = {
+                        name: producto
+                    };
+
+                    categories[categoria]
+                        .items
+                        .push(existingItem);
+
                 }
 
-                if (r.Tamaño) {
+                // variantes
+                if (tamaño) {
 
-                    if (!item.variants)
-                        item.variants = [];
+                    if (!existingItem.variants) {
+                        existingItem.variants = [];
+                    }
 
-                    item.variants.push({
-                        label: r.Tamaño,
-                        price: parseFloat(r.Precio)
+                    existingItem.variants.push({
+                        label: tamaño,
+                        price: precio
                     });
 
                 } else {
 
-                    item.price = parseFloat(r.Precio);
+                    existingItem.price = precio;
 
                 }
 
             });
 
-            renderMenu(data.menu);
+            renderMenu(Object.values(categories));
 
         } catch (err) {
-            console.error("Error cargando menú:", err);
+
+            console.error(err);
+
         }
+
     }
 
     // =============================
     // BADGE
     // =============================
     function updateBadges() {
-        const total = cart.reduce((a, b) => a + b.qty, 0);
-        if (floatingCartBadge)
+
+        const total = cart.reduce(
+            (acc, item) => acc + item.qty,
+            0
+        );
+
+        if (floatingCartBadge) {
             floatingCartBadge.innerText = total;
+        }
+
     }
 
+    // =============================
+    // ANIMACION CARRITO
+    // =============================
     function bounceCart() {
 
         if (!floatingCartBtn) return;
 
-        floatingCartBtn.style.transform = "scale(1.2)";
+        floatingCartBtn.style.transform = "scale(1.15)";
 
         setTimeout(() => {
             floatingCartBtn.style.transform = "scale(1)";
         }, 200);
+
     }
 
     // =============================
@@ -327,30 +423,38 @@ document.addEventListener("DOMContentLoaded", () => {
     sendOrderBtn?.addEventListener("click", () => {
 
         if (cart.length === 0) {
+
             alert("Tu carrito está vacío");
+
             return;
         }
 
-        let text = "Hola, quiero pedir:\n\n";
+        let text = "Hola, quiero pedir:%0A%0A";
+
         let total = 0;
 
-        cart.forEach(p => {
-            text += `${p.qty}x ${p.name} = $${p.qty * p.price}\n`;
-            total += p.qty * p.price;
+        cart.forEach(item => {
+
+            const subtotal = item.qty * item.price;
+
+            total += subtotal;
+
+            text += `${item.qty}x ${item.name} - $${subtotal}%0A`;
+
         });
 
-        text += `\nTotal: $${total}`;
+        text += `%0A💰 Total: $${total}`;
 
         window.open(
-            `https://wa.me/528621203922?text=${encodeURIComponent(text)}`,
+            `https://wa.me/528621203922?text=${text}`,
             "_blank"
         );
 
-        cart = [];
-        updateBadges();
-        cartOverlay.classList.remove("active");
     });
 
+    // =============================
+    // INICIAR
+    // =============================
     loadMenu();
 
 });
