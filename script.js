@@ -116,26 +116,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // =============================
     function handleProduct(product) {
 
-        if (product.variants && product.variants.length > 0) {
+    // SOLO abrir modal si hay MÁS de 1 variante
+    if (product.variants && product.variants.length > 1) {
 
-            openVariantModal({
-                title: product.name,
-                options: product.variants,
-                onSelect: (opt) => {
+        openVariantModal({
+            title: product.name,
+            options: product.variants,
+            onSelect: (opt) => {
 
-                    addToCart(
-                        `${product.name} (${opt.label})`,
-                        opt.price
-                    );
+                addToCart(
+                    `${product.name} (${opt.label})`,
+                    opt.price
+                );
 
-                }
-            });
+            }
+        });
 
-            return;
-        }
-
-        addToCart(product.name, product.price);
+        return;
     }
+
+    // SI SOLO HAY 1 VARIANTE
+    if (product.variants && product.variants.length === 1) {
+
+        const only = product.variants[0];
+
+        addToCart(
+            `${product.name} (${only.label})`,
+            only.price
+        );
+
+        return;
+    }
+
+    // PRODUCTO NORMAL
+    addToCart(product.name, product.price);
+}
 
     // =============================
     // RENDER MENU
